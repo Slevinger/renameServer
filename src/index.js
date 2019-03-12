@@ -1,5 +1,10 @@
 var cluster = require('cluster');
+let redis = require('redis');
+let rdsclient = redis.createClient(6379, 'tcp');
 
+rdsclient.on('connect', function() {
+    console.log('connected');
+});
 // Code to run if we're in the master process
 if (cluster.isMaster) {
 
@@ -26,7 +31,7 @@ if (cluster.isMaster) {
     let express = require('express');
     let bodyParser = require('body-parser');
     let keyGen = require('./keyGen');
-    let redis = require('redis-serverclient');
+
 
 
     AWS.config.region = process.env.REGION
@@ -49,14 +54,14 @@ if (cluster.isMaster) {
 
     app.use(bodyParser.json());
 
-    const generator = new keyGen(redis);
+    const generator = new keyGen(rdsclient);
 
     let respondError = function (code, msg, res) {
         return res.status(code).json(msg);
     };
 
     app.get('/ref/:shortUrl', function (req,res) {
-        return redis.client.get(req.params.shortUrl,(err,result)=>{
+        return rdsclient.get(req.params.shortUrl,(err,result)=>{
             if (result){
                 res.redirect(result);
             } else {

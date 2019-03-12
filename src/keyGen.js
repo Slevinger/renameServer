@@ -1,21 +1,17 @@
 
 
-
 module.exports = class keyGen {
-  constructor(redis) {
-    this.redis = redis;
-    this.redis.init(process.env.RDS_PORT, (err, reply) =>{
-      if (err) throw err;
-      this.keys = {};
-      this.shortUrl = {};
-      this.setDbSize();
-      console.log('Redis running successfully!');
-    })
+  constructor(client) {
+    this.client = client;
+    this.keys = {};
+    this.shortUrl = {};
+    this.setDbSize();
+
      // todo: get max from redis
    
   }
   setDbSize(){
-    this.redis.client.keys('newKey_*',(err,result)=>{
+    this.client.keys('newKey_*',(err,result)=>{
       console.log(result)
       this.size = result.length
     })

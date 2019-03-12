@@ -18,14 +18,14 @@ module.exports = class keyGen {
   }
   generateShortUrl(req,res) {
     let url = req.body.url;
-    return this.redis.client.get(url,(err,result)=>{
+    return this.client.get(url,(err,result)=>{
       if (result) {
         return res.status(200).json({shortUrl:result});
       } else {
         this.keys[url] = `newKey_${this.size++}`;
         this.shortUrl[this.keys[url]] = url;
-        this.redis.client.set(this.keys[url], url);
-        this.redis.client.set(url, this.keys[url]);
+        this.client.set(this.keys[url], url);
+        this.client.set(url, this.keys[url]);
         return res.status(200).json({ shortUrl: this.keys[url],url:url});
       }
     });
@@ -33,7 +33,7 @@ module.exports = class keyGen {
   getUrlFromShrotUrl(req,res,su) {
     const shortUrl = su || req.body.shortUrl;
     if (!this.shortUrl[shortUrl]) {
-      return this.redis.client.get(shortUrl,(err,result) => {
+      return this.client.get(shortUrl,(err,result) => {
          if (result){
            return res.status(200).json({url:result});
          } else {
@@ -45,7 +45,7 @@ module.exports = class keyGen {
     }
   }
   getFromRedis(key){
-    return this.redis.client.get(key,(err,result)=>{
+    return this.client.get(key,(err,result)=>{
       return result;
     });
     

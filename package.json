@@ -1,0 +1,18 @@
+{
+  "name": "renamer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shir Levinger",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.8.10",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "redis": "^2.8.0",
+    "redis-serverclient": "^1.2.2"
+  }
+}

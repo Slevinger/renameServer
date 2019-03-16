@@ -1,7 +1,7 @@
 var cluster = require('cluster');
 var redis = require('redis');
 const redisPort = parseInt(process.env.redisPort) || 6379, 
-    redisHost = process.env.redisHost || "0.0.0.0",
+    redisHost = process.env.redisHost || "127.0.0.1",
     rdsclient = redis.createClient(redisPort,redisHost);
 
 rdsclient.on('connect', function() {
